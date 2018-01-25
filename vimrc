@@ -1,5 +1,5 @@
-set nocompatible              " required
-filetype off                  " required
+""set nocompatible              " required
+""filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -21,6 +21,8 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 
 Plugin 'rdnetto/YCM-Generator'
+
+Bundle 'scrooloose/syntastic'
 
 "NERDtee设定
 let NERDChristmasTree=1
@@ -55,16 +57,24 @@ func! SaveInputData()
 	exec "w! /tmp/input_data"
 endfunc
 
+execute pathogen#infect()
 
-syntax enable
-set background=dark "背景使用黑色 
+if !exists("g:syntax_on")
+    syntax enable
+endif
+
+if has('gui_running')
+    set background=light
+else
+    set background=dark
+endif
 
 "colorscheme torte
 "colorscheme murphy
 "colorscheme desert 
 "colorscheme elflord
-colorscheme ron
-"colorscheme solarized
+"colorscheme ron
+colorscheme solarized
 
 
 
@@ -86,8 +96,8 @@ set go=             " 不要图形按钮
 "split style
 set splitbelow
 set splitright
-autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+""autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
+""autocmd InsertEnter * se cul    " 用浅色高亮当前行  
 set showcmd         " 输入的命令显示出来，看的清楚些  
 "set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
 "set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
@@ -283,8 +293,6 @@ set autoread
 autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 "代码补全 
 set completeopt=preview,menu 
-"允许插件  
-filetype plugin on
 "共享剪贴板  
 set clipboard+=unnamed 
 "从不备份  
@@ -303,8 +311,6 @@ set foldmethod=indent
 set foldlevel=3 
 " 不要使用vi的键盘模式，而是vim自己的
 set nocompatible
-" 语法高亮
-set syntax=on
 " 去掉输入错误的提示声音
 set noeb
 " 在处理未保存或只读文件的时候，弹出确认
@@ -402,7 +408,7 @@ function! ClosePair(char)
 		return a:char
 	endif
 endfunction
-filetype plugin indent on 
+"filetype plugin indent on 
 "打开文件类型检测, 加了这句才可以用智能补全
-set completeopt=longest,menu
+"set completeopt=longest,menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
