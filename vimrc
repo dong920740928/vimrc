@@ -24,6 +24,9 @@ Plugin 'rdnetto/YCM-Generator'
 
 Bundle 'scrooloose/syntastic'
 
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+
 "NERDtee设定
 let NERDChristmasTree=1
 let NERDTreeAutoCenter=1
@@ -45,6 +48,8 @@ nnoremap t :TlistToggle
 Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'Chiel92/vim-autoformat'
+
+let g:autoformat_verbosemode=1
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
