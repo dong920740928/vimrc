@@ -1,6 +1,3 @@
-""set nocompatible              " required
-""filetype off                  " required
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -54,6 +51,7 @@ let g:autoformat_verbosemode=1
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+"打开文件类型检测, 加了这句才可以用智能补全
 
 map <F9> :call SaveInputData()<CR>
 func! SaveInputData()
@@ -70,10 +68,12 @@ endif
 
 if has('gui_running')
     set background=light
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10 
 else
     set background=dark
 endif
 
+" 设置配色方案
 "colorscheme torte
 "colorscheme murphy
 "colorscheme desert 
@@ -101,8 +101,8 @@ set go=             " 不要图形按钮
 "split style
 set splitbelow
 set splitright
-""autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-""autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
+autocmd InsertEnter * se cul    " 用浅色高亮当前行  
 set showcmd         " 输入的命令显示出来，看的清楚些  
 "set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
 "set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
@@ -115,64 +115,13 @@ if version >= 603
 	set helplang=en
 	set encoding=utf-8
 endif
-" 设置配色方案
-"colorscheme murphy
 "字体 
 "if (has("gui_running")) 
-"   set guifont=Bitstream\ Vera\ Sans\ Mono\ 10 
 "endif 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""新文件标题
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java文件，自动插入文件头 
-""autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
-""定义函数SetTitle，自动插入文件头 
-""func SetTitle() 
-""	"如果文件类型为.sh文件 
-""	if &filetype == 'sh' 
-""		call setline(1,"\#########################################################################") 
-""		call append(line("."), "\# File Name: ".expand("%")) 
-""		call append(line(".")+1, "\# Author: dong920740928") 
-""		call append(line(".")+2, "\# mail: dong920740928@gmail.com") 
-""		call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
-""		call append(line(".")+4, "\#########################################################################") 
-""		call append(line(".")+5, "\#!/bin/bash") 
-""		call append(line(".")+6, "") 
-""	elseif &filetype == 'python'
-""		call setline(1, "\"\"\"")
-""		call append(line("."), "File Name: ".expand("%"))
-""		call append(line(".")+1, "Author: dong920740928")
-""		call append(line(".")+2, "Mail: dong920740928@gmail.com")
-""		call append(line(".")+3, "Created Time: ".strftime("%c"))
-""		call append(line(".")+4, "\"\"\"")
-""		call append(line(".")+5, "")
-""	else 
-""		call setline(1, "/*************************************************************************") 
-""		call append(line("."), "	> File Name: ".expand("%")) 
-""		call append(line(".")+1, "	> Author: dong920740928") 
-""		call append(line(".")+2, "	> Mail: dong920740928@gmail.com") 
-""		call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
-""		call append(line(".")+4, " ************************************************************************/") 
-""		call append(line(".")+5, "")
-""	endif
-""	if &filetype == 'cpp'
-""		call append(line(".")+6, "#include <iostream>")
-""		call append(line(".")+7, "using namespace std;")
-""		call append(line(".")+8, "")
-""	endif
-""	if &filetype == 'c'
-""		call append(line(".")+6, "#include <stdio.h>")
-""		call append(line(".")+7, "")
-""	endif
-""	"	if &filetype == 'java'
-""	"		call append(line(".")+6,"public class ".expand("%"))
-""	"		call append(line(".")+7,"")
-""	"	endif
-""	"新建文件后，自动定位到文件末尾
-""	autocmd BufNewFile * normal G
-""endfunc 
 
-""new cpp file
 autocmd BufNewFile *.cpp call SetCPP()
 autocmd BufNewFile *.[ch] call SetC()
 autocmd BufNewFile *.sh call SetBash()
@@ -328,10 +277,7 @@ set tabstop=4
 " 统一缩进为4
 set softtabstop=4
 set shiftwidth=4
-au BufNewFile,BufRead *.js, *.html, *.css
-\ set tabstop=2
-\ set softtabstop=2
-\ set shiftwidth=2
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
 " 用空格代替制表符
 set expandtab
 " 在行和段开始处使用制表符
@@ -413,7 +359,5 @@ function! ClosePair(char)
 		return a:char
 	endif
 endfunction
-"filetype plugin indent on 
-"打开文件类型检测, 加了这句才可以用智能补全
 "set completeopt=longest,menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
