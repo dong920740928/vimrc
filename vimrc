@@ -9,20 +9,29 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-Bundle 'Valloric/YouCompleteMe' 
+Plugin 'Valloric/YouCompleteMe' 
 
 let g:ycm_confirm_extra_conf = 0
+"let g:loaded_youcompleteme = 1
 
 Plugin 'Raimondi/delimitMate'
+let delimitMate_expand_cr = 1
 
 Plugin 'scrooloose/nerdtree'
 
 Plugin 'rdnetto/YCM-Generator'
 
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_cpp_check_header = 1
 
 "NERDtee设定
 let NERDChristmasTree=1
@@ -48,9 +57,10 @@ Plugin 'Chiel92/vim-autoformat'
 
 let g:autoformat_verbosemode=1
 
+Plugin 'altercation/vim-colors-solarized'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
 "打开文件类型检测, 加了这句才可以用智能补全
 
 map <F9> :call SaveInputData()<CR>
@@ -95,7 +105,7 @@ colorscheme solarized
 "set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
 "winpos 5 5          " 设定窗口位置  
 "set lines=40 columns=155    " 设定窗口大小  
-set go=             " 不要图形按钮  
+"set go=             " 不要图形按钮  
 "color asmanian2     " 设置背景主题  
 "set guifont=Courier_New:h10:cANSI   " 设置字体  
 "split style
@@ -103,21 +113,19 @@ set splitbelow
 set splitright
 autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
 autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-set showcmd         " 输入的命令显示出来，看的清楚些  
+"set showcmd         " 输入的命令显示出来，看的清楚些  
 "set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
 "set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
 "set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
-set novisualbell    " 不要闪烁(不明白)  
+"set novisualbell    " 不要闪烁(不明白)  
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
 set foldenable      " 允许折叠  
-" 显示中文帮助
+
 if version >= 603
 	set helplang=en
 	set encoding=utf-8
 endif
-"字体 
-"if (has("gui_running")) 
-"endif 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""新文件标题
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -184,8 +192,14 @@ endfunc
 "键盘命令
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nmap <leader>w :w!<cr>
-nmap <leader>f :find<cr>
+"nmap <leader>w :w!<cr>
+""nmap <leader>f :find<cr>
+
+" For local replace
+nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+
+" For global replace
+nnoremap gR gD:%s/<C-R>///gc<left><left><left>
 
 " 映射全选+复制 ctrl+a
 map <C-A> ggVGY
@@ -200,11 +214,11 @@ nnoremap <C-F2> :vert diffsplit
 "新建标签  
 map <M-F2> :tabnew<CR>  
 "列出当前目录文件  
-map <F3> :tabnew .<CR>  
+""map <F3> :tabnew .<CR>  
 "打开树状文件目录  
-map <C-F3> \be  
+""map <C-F3> \be  
 "C，C++ 按F5编译运行
-map <F5> :call CompileRunGcc()<CR>
+""map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	exec "w"
 	if &filetype == 'c'
@@ -224,7 +238,7 @@ func! CompileRunGcc()
 	endif
 endfunc
 "C,C++的调试
-map <F8> :call Rungdb()<CR>
+""map <F8> :call Rungdb()<CR>
 func! Rungdb()
 	exec "w"
 	exec "!g++ % -g -o %<"
@@ -242,31 +256,31 @@ nnoremap <C-H> <C-W><C-H>
 ""实用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 设置当文件被改动时自动载入
-set autoread
+""set autoread
 " quickfix模式
-autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
+""autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 "代码补全 
-set completeopt=preview,menu 
+""set completeopt=preview,menu 
 "共享剪贴板  
 set clipboard+=unnamed 
 "从不备份  
-set nobackup
+""set nobackup
 "make 运行
-:set makeprg=g++\ -Wall\ \ %
+"":set makeprg=g++\ -Wall\ \ %
 "自动保存
 set autowrite
 set ruler                   " 打开状态栏标尺
 set cursorline              " 突出显示当前行
-set magic                   " 设置魔术
-set guioptions-=T           " 隐藏工具栏
-set guioptions-=m           " 隐藏菜单栏
+""set magic                   " 设置魔术
+""set guioptions-=T           " 隐藏工具栏
+""set guioptions-=m           " 隐藏菜单栏
 set foldcolumn=0
 set foldmethod=indent 
 set foldlevel=3 
 " 不要使用vi的键盘模式，而是vim自己的
 set nocompatible
 " 去掉输入错误的提示声音
-set noeb
+""set noeb
 " 在处理未保存或只读文件的时候，弹出确认
 set confirm
 " 自动缩进
@@ -287,8 +301,7 @@ set number
 " 历史记录数
 set history=1000
 "禁止生成临时文件
-set nobackup
-set noswapfile
+""set noswapfile
 "搜索忽略大小写
 set ignorecase
 "搜索逐字符高亮
@@ -344,14 +357,14 @@ set smartindent
 " 高亮显示普通txt文件（需要txt.vim脚本）
 au BufRead,BufNewFile *  setfiletype txt
 "自动补全
-:inoremap ( ()<ESC>i
-:inoremap ) <c-r>=ClosePair(')')<CR>
+"":inoremap ( ()<ESC>i
+"":inoremap ) <c-r>=ClosePair(')')<CR>
 ":inoremap { {<CR>}<ESC>O
 ":inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-:inoremap " ""<ESC>i
-:inoremap ' ''<ESC>i
+"":inoremap [ []<ESC>i
+"":inoremap ] <c-r>=ClosePair(']')<CR>
+"":inoremap " ""<ESC>i
+"":inoremap ' ''<ESC>i
 function! ClosePair(char)
 	if getline('.')[col('.') - 1] == a:char
 		return "\<Right>"
